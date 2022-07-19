@@ -44,11 +44,8 @@ public class TravelPackageServiceImpl implements TravelPackageService {
         if (travelPackageDTO.getImageFilePath() != null && !travelPackageDTO.getImageFilePath().isEmpty()){
             packageToUpdate.setImageFilePath(travelPackageDTO.getImageFilePath());
         }
-//        TODO delete old code
-//        packageToUpdate.setImageFilePath(travelPackageDTO.getImageFilePath() != null ? travelPackageDTO.getImageFilePath() : packageToUpdate.getImageFilePath());
 
-        TravelPackage updatedPackage = this.travelPackageRepository.save(packageToUpdate);
-        return updatedPackage;
+        return this.travelPackageRepository.save(packageToUpdate);
     }
 
     @Override
