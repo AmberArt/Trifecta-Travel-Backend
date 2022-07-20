@@ -7,12 +7,12 @@ import java.util.Random;
 public class PurchaseOrderDTO {
 
     private Integer travelPackageId;
-    private Integer customerId;
+//    private Integer customerId;
     private String confirmationCode = alphaNumericString(15);
 
-    public PurchaseOrderDTO(Integer travelPackageId, Integer customerId) {
+    public PurchaseOrderDTO(Integer travelPackageId) {
         this.travelPackageId = travelPackageId;
-        this.customerId = customerId;
+//        this.customerId = customerId;
     }
 
     public Integer getTravelPackageId() {
@@ -23,13 +23,13 @@ public class PurchaseOrderDTO {
         this.travelPackageId = travelPackageId;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
+//    public Integer getCustomerId() {
+//        return customerId;
+//    }
+//
+//    public void setCustomerId(Integer customerId) {
+//        this.customerId = customerId;
+//    }
 
     public String getConfirmationCode() {
         return confirmationCode;

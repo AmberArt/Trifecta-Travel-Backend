@@ -2,8 +2,10 @@ package com.trifectatravel.travel_api.service;
 
 import com.trifectatravel.travel_api.controllers.PurchaseOrderController;
 import com.trifectatravel.travel_api.controllers.dto.PurchaseOrderDTO;
+import com.trifectatravel.travel_api.controllers.dto.TravelPackageDTO;
 import com.trifectatravel.travel_api.repositories.PurchaseOrderRepository;
 import com.trifectatravel.travel_api.repositories.entities.PurchaseOrder;
+import com.trifectatravel.travel_api.repositories.entities.TravelPackage;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,8 +17,9 @@ import java.util.Optional;
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
     private PurchaseOrderRepository purchaseOrderRepository;
+    private TravelPackageDTO travelPackageDTO;
 
-     public PurchaseOrderServiceImpl(final PurchaseOrderRepository purchaseOrderRepository){
+    public PurchaseOrderServiceImpl(final PurchaseOrderRepository purchaseOrderRepository){
          this.purchaseOrderRepository = purchaseOrderRepository;
      }
 
@@ -33,7 +36,6 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 //        if(purchaseOrderOptional.isEmpty()){
 //            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order with %d not found".formatted(orderId));
 //        }
-//
 //        return purchaseOrderRepository.save(orderToUpdate);
 //    }
 
@@ -62,5 +64,11 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
         PurchaseOrder purchaseOrder = purchaseOrderOptional.get();
         return purchaseOrder;
+    }
+
+    @Override
+    public void assignTravelPackage(TravelPackage travelPackage) {
+//        this.travelPackageDTO = travelPackageDTO;
+//        return purchaseOrderRepository.save(purchaseOrder);
     }
 }

@@ -2,11 +2,19 @@ package com.trifectatravel.travel_api.controllers;
 
 
 import com.trifectatravel.travel_api.controllers.dto.PurchaseOrderDTO;
+import com.trifectatravel.travel_api.controllers.dto.TravelPackageDTO;
 import com.trifectatravel.travel_api.repositories.entities.Customer;
 import com.trifectatravel.travel_api.repositories.entities.PurchaseOrder;
+import com.trifectatravel.travel_api.repositories.entities.TravelPackage;
 import com.trifectatravel.travel_api.service.CustomerService;
 import com.trifectatravel.travel_api.service.PurchaseOrderService;
+import com.trifectatravel.travel_api.service.TravelPackageService;
 import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/order")
@@ -15,9 +23,12 @@ public class PurchaseOrderController {
     private final PurchaseOrderService purchaseOrderService;
     private final CustomerService customerService;
 
-    public PurchaseOrderController( PurchaseOrderService purchaseOrderService, CustomerService customerService){
+    private final TravelPackageService travelPackageService;
+
+    public PurchaseOrderController(PurchaseOrderService purchaseOrderService, CustomerService customerService, TravelPackageService travelPackageService){
         this.purchaseOrderService = purchaseOrderService;
         this.customerService = customerService;
+        this.travelPackageService = travelPackageService;
     }
 
     @GetMapping
@@ -32,16 +43,43 @@ public class PurchaseOrderController {
 
 //    Customer created here. No need for controller since we don't have a sign in where they can interact with a profile
     @PostMapping("/add/{id}")
-    public PurchaseOrder createNewOrder(@RequestBody Customer customer, @PathVariable("id") Integer packageId){
+    public void createNewOrder(@RequestBody Customer customer, @PathVariable("id") Integer packageId){
+        PurchaseOrderDTO purchaseOrderDTO = new PurchaseOrderDTO(packageId);
+//        first step: create customer in database
+//        - then find customer by Id
+//        -
         Customer customerSaved = customerService.save(customer);
-        PurchaseOrderDTO purchaseOrderDTO = new PurchaseOrderDTO(packageId, customerSaved.getId());
-        return purchaseOrderService.save(purchaseOrderDTO);
+        PurchaseOrder purchaseOrderSaved = purchaseOrderService.save(purchaseOrderDTO);
+//        customerSaved.addOrder(purchaseOrderService.save(purchaseOrderDTO));
+        purchaseOrderSaved.addTravelPackage(travelPackageService.findById(packageId));
+        customerSaved.addOrder(purchaseOrderSaved);
+        customerService.save(customerSaved);
+
     }
 
-//    @PutMapping("/{id}")
-//    public PurchaseOrder updateOrder(@PathVariable("id") Integer orderId, PurchaseOrderDTO purchaseOrderDTO){
-//        return purchaseOrderService.update(orderId, purchaseOrderDTO);
+    @GetMapping("/customer/{id}")
+    public Customer getCustomer(@PathVariable("id") Integer customerId ){
+        return customerService.findById(customerId);
+    }
+
+//    get purchase order by customer
+    @GetMapping("/id/{id}")
+    public List<PurchaseOrder> getId(@PathVariable("id") final Integer id) {
+        Customer customer = customerService.findById(id);
+        return customer.getPurchaseOrders();
+    }
+
+//    @PutMapping("/{purchaseOrderId}/travelPackage/{travelPackageId}")
+//    public PurchaseOrder assignTravelPackageToOrder(
+//            @PathVariable Integer travelPackageId,
+//            @PathVariable Integer purchaseOrderId
+//    ) {
+//        PurchaseOrderDTO purchaseOrderDTO = purchaseOrderService.findById(purchaseOrderId);
+//        TravelPackage travelPackage = travelPackageService.findById(travelPackageId);
+//        purchaseOrderService.assignTravelPackage(travelPackage);
+//        return purchaseOrderService.save(purchaseOrder);
 //    }
+
 
     @DeleteMapping("/{id}")
     public void deleteOrder(@PathVariable("id") Integer orderId){

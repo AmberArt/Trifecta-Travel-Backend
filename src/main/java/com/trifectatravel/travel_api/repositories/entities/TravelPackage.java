@@ -1,9 +1,12 @@
 package com.trifectatravel.travel_api.repositories.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.trifectatravel.travel_api.controllers.dto.TravelPackageDTO;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "travel_package")
@@ -18,6 +21,15 @@ public class TravelPackage {
     private String description;
     @Column(name = "image_file_path")
     private String imageFilePath;
+
+
+
+    @Column(name = "purchase_order_id")
+    private Integer purchaseOrderId;
+
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "travelPackage")
+//    private Set<PurchaseOrder> purchaseOrders = new HashSet<>();
 
 
     public TravelPackage(TravelPackageDTO travelPackageDTO){
@@ -62,4 +74,16 @@ public class TravelPackage {
     public void setImageFilePath(String imageFilePath) {
         this.imageFilePath = imageFilePath;
     }
+
+    public Integer getPurchaseOrderId() {
+        return purchaseOrderId;
+    }
+
+    public void setPurchaseOrderId(Integer purchaseOrderId) {
+        this.purchaseOrderId = purchaseOrderId;
+    }
+
+//    public Set<PurchaseOrder> getPurchaseOrders() {
+//        return purchaseOrders;
+//    }
 }

@@ -1,7 +1,9 @@
 package com.trifectatravel.travel_api.service;
 
 import com.trifectatravel.travel_api.controllers.dto.PurchaseOrderDTO;
+import com.trifectatravel.travel_api.controllers.dto.TravelPackageDTO;
 import com.trifectatravel.travel_api.repositories.entities.PurchaseOrder;
+import com.trifectatravel.travel_api.repositories.entities.TravelPackage;
 
 public interface PurchaseOrderService {
 
@@ -14,4 +16,6 @@ public interface PurchaseOrderService {
     Iterable<PurchaseOrder> findAll();
 
     PurchaseOrder findById(Integer orderId);
+
+    void assignTravelPackage(TravelPackage travelPackage);
 }
