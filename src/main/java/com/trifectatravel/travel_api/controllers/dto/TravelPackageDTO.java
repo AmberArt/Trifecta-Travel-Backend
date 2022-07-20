@@ -7,7 +7,6 @@ public class TravelPackageDTO {
     @Column(name = "trip_name")
     private String tripName;
     private String description;
-    @Column(name = "image_file_path")
     private String imageFilePath;
 
     public TravelPackageDTO(){
